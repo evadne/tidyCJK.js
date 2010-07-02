@@ -76,10 +76,23 @@ if (!mono) var mono = {};
 		}, 
 	
 	
-	//	FIXME: Normalize punctuations around CJK glyphs
+	//	Normalize parentheses
 	
-	
-	//	FIXME: Normalize punctuaitons around alphanumeric glyphs
+		{	from: _rx([
+			
+				"\\(",
+				_(_s(patternCJKIdeograms)),
+				"\\)"
+								
+			]), to: "（$1）"
+			
+		}, {	from: _rx([
+			
+				"（", _(_s(patternLatinateNumericOrSpace)), "）"
+								
+			]), to: "($1)"
+			
+		}, 
 	
 	
 	//	Remove duplicate whitespaces
