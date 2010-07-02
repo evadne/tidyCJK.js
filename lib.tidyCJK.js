@@ -1,5 +1,9 @@
-//	lib.tidyCJK.js
+//	lib.mono.tidy.CJK.js
 //	Evadne Wu at Iridia, 2010
+
+
+
+
 
 if (!mono) var mono = {};
 
@@ -7,13 +11,114 @@ if (!mono) var mono = {};
 
 
 
-mono.tidyCJK = function (theString) {
+(function () {
 
-	var tidyProcess = /([\u4E00-\u9FFF|\u3000-\u303F|\u0021-\u007E|\uFF00-\uFF20])(\s*)([\u0000-\u0019|\u0021-\u007F|\u2000-\u206F|\u0025][\u0000-\u0019|\u0021-\u007F|\u2000-\u206F|\u0025|\s]*[\u0000-\u0019|\u0021-\u007F|\u2000-\u206F|\u0025])(\s*)([\u4E00-\u9FFF|\u3000-\u303F|\u0021-\u007E|\uFF00-\uFF20])/gi;
+
+
+
+
+//	Base Patterns
+
+	var patternCJKIdeograms = new XRegExp("\\p{InCJKUnifiedIdeographs}|\\p{InCJKUnifiedIdeographsExtensionA}");
+
+	var patternLatinateNumericOrSpace = new XRegExp("(?:\\p{InBasicLatin}|\\p{InGeneralPunctuation}|\\p{InSupplementalPunctuation})+");
+
+	var patternOptionalWhitespace = /(?:\s+)?/ig;
 	
-	var arrayOfStringsToProcess = theString.match(tidyProcess);
-	if (arrayOfStringsToProcess == null) return theString;
 	
-	return theString.replace(tidyProcess, "$1 $3 $5");
 	
-}
+	
+	
+	var _ = function (inString) { return ["(", String(inString), ")"].join(""); }
+	
+	var _s = function (inRegExp) {
+	
+		if (typeof inRegExp.source != 'string') return undefined;
+		return inRegExp.source;
+		
+	}
+	
+	var __s = function () { return _(_s(arguments[0])) };
+	
+	
+	var _rx = function (inArray) {
+	
+		if (typeof inArray.join != 'function') return undefined;
+		return new RegExp(inArray.join(""), "ig");
+	
+	}
+	
+	
+	
+	
+	
+	var transformations = [
+	
+	
+	//	Insert whitespace between a CJK glyph and an alphanumeric glyph
+	
+		{	from: _rx([
+			
+				_(_s(patternCJKIdeograms)),
+				_s(patternOptionalWhitespace),
+				_(_s(patternLatinateNumericOrSpace))
+								
+			]), to: "$1 $2"
+			
+		}, {	from: _rx([
+			
+				_(_s(patternLatinateNumericOrSpace)),
+				_s(patternOptionalWhitespace),
+				_(_s(patternCJKIdeograms))
+								
+			]), to: "$1 $2"
+			
+		}, 
+	
+	
+	//	FIXME: Normalize punctuations around CJK glyphs
+	
+	
+	//	FIXME: Normalize punctuaitons around alphanumeric glyphs
+	
+	
+	//	Remove duplicate whitespaces
+		
+		{	from: /\s+/ig, to: " "	}
+	
+	
+	];
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	mono.tidyCJK = function (theString) {
+	
+		var responseString = new String(theString);
+		
+		$.each(transformations, function (transformationIndex, transformationInstruction) {
+		
+			responseString = responseString.replace(transformationInstruction.from, transformationInstruction.to);
+			
+		});
+		
+		return responseString;
+		
+	}
+	
+})();
+
+
+
+
+
+
+
+
+
