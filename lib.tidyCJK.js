@@ -41,6 +41,15 @@ if (!mono) var mono = {};
 	var __s = function () { return _(_s(arguments[0])) };
 	
 	
+	var _mul = function (inRegExpGroupString, inRepeatTimes) {
+	
+		inRepeatTimes = inRepeatTimes || "1,";	//	as in +
+	
+		return "(" + inRegExpGroupString + "){" + String(inRepeatTimes) + "}";
+	
+	};
+	
+	
 	var _rx = function (inArray) {
 	
 		if (typeof inArray.join != 'function') return undefined;
@@ -81,14 +90,26 @@ if (!mono) var mono = {};
 		{	from: _rx([
 			
 				"\\(",
-				_(_s(patternCJKIdeograms)),
-				"\\)"
+				_s(patternOptionalWhitespace),
+				_(_mul(_s(patternCJKIdeograms)))
 								
-			]), to: "（$1）"
+			]), to: "（$1"
 			
 		}, {	from: _rx([
 			
-				"（", _(_s(patternLatinateNumericOrSpace)), "）"
+				_(_mul(_s(patternCJKIdeograms))),
+				_s(patternOptionalWhitespace),
+				"\\)"
+								
+			]), to: "$1）"
+			
+		}, {	from: _rx([
+			
+				"（", 
+				_s(patternOptionalWhitespace),
+				_(_mul(_s(patternLatinateNumericOrSpace))),
+				_s(patternOptionalWhitespace),
+				 "）"
 								
 			]), to: "($1)"
 			
