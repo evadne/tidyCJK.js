@@ -64,9 +64,11 @@ if (!mono) var mono = {};
 	var transformations = [
 	
 	
-	//	Insert whitespace between a CJK glyph and an alphanumeric glyph
+	//	Normalizes whitespace
 	
-		{	from: _rx([
+		{
+		
+			from: _rx([
 			
 				_(_s(patternCJKIdeograms)),
 				_s(patternOptionalWhitespace),
@@ -74,7 +76,23 @@ if (!mono) var mono = {};
 								
 			]), to: "$1 $2"
 			
-		}, {	from: _rx([
+		}, 
+		
+		{
+		
+			from: _rx([
+			
+				_(_s(patternCJKIdeograms)),
+				_s(patternOptionalWhitespace),
+				_(_s(patternCJKIdeograms))
+								
+			]), to: "$1$2"
+			
+		}, 
+		
+		{
+		
+			from: _rx([
 			
 				_(_s(patternLatinateNumericOrSpace)),
 				_s(patternOptionalWhitespace),
@@ -87,7 +105,9 @@ if (!mono) var mono = {};
 	
 	//	Normalize parentheses
 	
-		{	from: _rx([
+		{
+		
+			from: _rx([
 			
 				"\\(",
 				_s(patternOptionalWhitespace),
@@ -95,7 +115,11 @@ if (!mono) var mono = {};
 								
 			]), to: "（$1"
 			
-		}, {	from: _rx([
+		}, 
+		
+		{
+		
+			from: _rx([
 			
 				_(_mul(_s(patternCJKIdeograms))),
 				_s(patternOptionalWhitespace),
@@ -103,7 +127,11 @@ if (!mono) var mono = {};
 								
 			]), to: "$1）"
 			
-		}, {	from: _rx([
+		}, 
+		
+		{
+		
+			from: _rx([
 			
 				"（", 
 				_s(patternOptionalWhitespace),
@@ -118,8 +146,13 @@ if (!mono) var mono = {};
 	
 	//	Remove duplicate whitespaces
 		
-		{	from: /\s+/ig, to: " "	}
-	
+		{
+		
+			from: /\s+/ig, 
+			to: " "
+		
+		}
+
 	
 	];
 	
