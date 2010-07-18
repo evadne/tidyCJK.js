@@ -21,7 +21,7 @@ if (!mono) var mono = {};
 
 	var patternCJKIdeograms = new XRegExp("\\p{InCJKUnifiedIdeographs}|\\p{InCJKUnifiedIdeographsExtensionA}");
 
-	var patternLatinateNumericOrSpace = new XRegExp("(?:\\p{InBasicLatin}|\\p{InGeneralPunctuation}|\\p{InSupplementalPunctuation})+");
+	var patternLatinateNumericOrSpace = new XRegExp("(?:\\p{InBasicLatin}|\\p{InLatin1Supplement}|\\p{InLatinExtendedA}|\\p{InLatinExtendedB}|\\p{InGeneralPunctuation}|\\p{InSupplementalPunctuation})+");
 
 	var patternOptionalWhitespace = /(?:\s+)?/ig;
 	
