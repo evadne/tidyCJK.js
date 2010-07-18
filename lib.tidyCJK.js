@@ -144,6 +144,36 @@ if (!mono) var mono = {};
 		}, 
 	
 	
+	//	Normalize Quotation Marks	patternLatinateNumericOrSpace
+	
+		{
+		
+			from: _rx([
+			
+				"「", 
+				_s(patternOptionalWhitespace),
+				_(_mul(_s(patternLatinateNumericOrSpace))),
+				_s(patternOptionalWhitespace),
+				 "」"
+								
+			]), to: " “$1” "
+		
+		},
+		
+		{
+		
+			from: _rx([
+			
+				"『", 
+				_s(patternOptionalWhitespace),
+				_(_mul(_s(patternLatinateNumericOrSpace))),
+				_s(patternOptionalWhitespace),
+				 "』"
+								
+			]), to: " ‘$1’ "
+		
+		},
+	
 	//	Remove duplicate whitespaces
 		
 		{
