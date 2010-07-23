@@ -139,7 +139,7 @@ if (!mono) var mono = {};
 				_s(patternOptionalWhitespace),
 				 "）"
 								
-			]), to: "($1)"
+			]), to: " ($1) "
 			
 		}, 
 	
@@ -157,6 +157,30 @@ if (!mono) var mono = {};
 				 "」"
 								
 			]), to: " “$1” "
+		
+		},
+		
+		{
+		
+			from: _rx([
+			
+				"“", 
+				_s(patternOptionalWhitespace),
+				_(_mul(_s(patternLatinateNumericOrSpace)))
+								
+			]), to: " “$1"
+		
+		},
+		
+		{
+		
+			from: _rx([
+			
+				_(_mul(_s(patternLatinateNumericOrSpace))),
+				_s(patternOptionalWhitespace),
+				"”" 
+								
+			]), to: "$1” "
 		
 		},
 		
