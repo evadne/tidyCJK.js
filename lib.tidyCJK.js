@@ -233,6 +233,25 @@ if (!mono) var mono = {};
 		
 	}
 	
+	mono.tidyCJKInTextNodes = function (theString) {
+	
+		var textLiteral = theString;
+		var text = $("<span>" + textLiteral + "</span>");
+			
+		text.contents().filter(function () {
+		
+			return this.nodeType == 3;
+		
+		}).each(function () {
+		
+			textLiteral = textLiteral.replace(this.nodeValue, mono.tidyCJK(this.nodeValue));
+			
+		});
+		
+		return textLiteral;
+	
+	}
+	
 })();
 
 
